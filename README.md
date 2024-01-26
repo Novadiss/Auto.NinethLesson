@@ -7,7 +7,7 @@
 
 ## Инструкция по настройке Allure
 
-    В проекте в build.gradle прописать
+1. В проекте в build.gradle прописать
 
     plugins{
     id'java'id'io.qameta.allure'version'2.8.1'
@@ -25,14 +25,14 @@
 
 **Для запуска использовать команду**
 
-    gradlew clean test allureReport
+gradlew clean test allureReport
 
-    gradlew allureServe
+gradlew allureServe
 
-**Краткая инструкция по установке ReportPortal**
+# Краткая инструкция по установке ReportPortal
 
-    Создать проект в IDEA на базе Gradle
-    build.gradle должен выглядеть как
+1. Создать проект в IDEA на базе Gradle
+2. build.gradle должен выглядеть как
 
     plugins {
     id 'java'
@@ -86,8 +86,8 @@
 
 (В данном файле также интегрирован selenide и allure)
 
-    Создать файл docker-compose.yml и скопировать файл из [docker-compose.yml для windows](https://github.com/reportportal/reportportal/blob/master/docker-compose.yml)
-    Раскомментировать строки 'for windows host' и закомментировать 'for unix host'
+3. Создать файл docker-compose.yml и скопировать файл из [docker-compose.yml для windows](https://github.com/reportportal/reportportal/blob/master/docker-compose.yml)
+4. Раскомментировать строки 'for windows host' и закомментировать 'for unix host'
 
     volumes:
     # For windows host
@@ -95,7 +95,7 @@
     # For unix host
     # - ./data/postgres:/var/lib/postgresql/data
 
-    Раскомментировать и закоментировать строки
+5. Раскомментировать и закомментировать строки
 
     volumes:
       ## For unix host
@@ -103,7 +103,7 @@
       ## For windows host
        - minio:/data
 
-    Создать minio: в 
+6. Создать minio: в 
 
     volumes:
     elasticsearch:
@@ -111,13 +111,13 @@
     postgres:
     minio:
 
-    Создать папку /META-INF/services в resources
-    Положить туда файл, названный org.junit.jupiter.api.extension.Extension
-    В данный файл прописать имплементацию одной строкой
+7. Создать папку /META-INF/services в resources
+8. Положить туда файл, названный org.junit.jupiter.api.extension.Extension
+9. В данный файл прописать имплементацию одной строкой
 
     com.epam.reportportal.junit5.ReportPortalExtension
 
-    Создать файл log4j2.xml file в папке resources и прописать
+10. Создать файл log4j2.xml file в папке resources и прописать
 
     <?xml version="1.0" encoding="UTF-8"?>
     <Configuration status="WARN">
@@ -139,80 +139,44 @@
        </Loggers>
     </Configuration>
 
-    Создать файл logback.xml file в папке resources и прописать
 
-<?xml version="1.0" encoding="UTF-8"?>
-<configuration>
+11. Для загрузки и запуска ReportPortal прописать в терминале команду
 
-   <!-- Send debug messages to System.out -->
-   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-       <!-- By default, encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder -->
-       <encoder>
-           <pattern>%d{HH:mm:ss.SSS} %-5level %logger{5} - %thread - %msg%n</pattern>
-       </encoder>
-   </appender>
+    docker-compose -p reportportal up -d --force-recreate
 
-   <appender name="RP" class="com.epam.reportportal.logback.appender.ReportPortalAppender">
-       <encoder>
-           <!--Best practice: don't put time and logging level to the final message. Appender do this for you-->
-           <pattern>%d{HH:mm:ss.SSS} [%t] %-5level - %msg%n</pattern>
-           <pattern>[%t] - %msg%n</pattern>
-       </encoder>
-   </appender>
+12. После того, как все файлы и контейнеры загрузятся открыть в браузере http://localhost:8080
+13. Необходимо залогиниться в качестве админа, используя данные с официального сайта
 
-   <!--'additivity' flag is important! Without it logback will double-log log messages-->
-   <logger name="binary_data_logger" level="TRACE" additivity="false">
-       <appender-ref ref="RP"/>
-   </logger>
+    Логин superadmin
+    Пароль erebus
 
-   <logger name="com.epam.reportportal.service" level="WARN"/>
-   <logger name="com.epam.reportportal.utils" level="WARN"/>
+14. Далее добавляем пользователя в проект по шагам, открывая вкладки:
 
-   <!-- By default, the level of the root level is set to DEBUG -->
-   <root level="TRACE">
-       <appender-ref ref="RP"/>
-       <appender-ref ref="STDOUT"/>
-   </root>
-
-</configuration>
-
-    Для загрузки и запуска ReportPortal прописать в терминале команду
-
-docker-compose -p reportportal up -d --force-recreate
-
-    После того, как все файлы и контейнеры загрузятся открыть в браузере http://localhost:8080
-    Необходимо залогиниться в качестве админа, используя данные с официального сайта
-
-Логин superadmin
-Пароль erebus
-
-    Далее добавляем пользователя в проект по шагам, открывая вкладки:
-
-Administrative -> My Test Project -> Members -> Add user
+    Administrative -> My Test Project -> Members -> Add user
 
 
-    Вводим имя и пароль для нового пользователя.
-    Необходимо перелогиниться под только что созданным пользователем.
-    Нажать на иконку пользователя(user) и выбрать Profile
-    Во вкладке Configuration Examples будет пример файла reportportal.properties для данного пользователя.
-    Создать в проекте в IDEA также в папке resources файл reportportal.properties
-    Скопировать данные из Configuration Examples в данный файл в IDEA
-    Создать в папке resources файл junit-platform.properties и добавить в него строку:
+15. Вводим имя и пароль для нового пользователя.
+16. Необходимо перелогиниться под только что созданным пользователем.
+17. Нажать на иконку пользователя(user) и выбрать Profile
+18. Во вкладке Configuration Examples будет пример файла reportportal.properties для данного пользователя.
+19. Создать в проекте в IDEA также в папке resources файл reportportal.properties
+20. Скопировать данные из Configuration Examples в данный файл в IDEA
+21. Создать в папке resources файл junit-platform.properties и добавить в него строку:
 
-junit.jupiter.extensions.autodetection.enabled=true
+    junit.jupiter.extensions.autodetection.enabled=true
 
-    После того, как JUnit подключился к ReportPortal нужно запустить приложение и запустить тесты.
-    На странице с ReportPortal слева нажать на вкладку Launches, после чего справа появится название launches эквивалентное указанному в файле reportportal.properties
-    Нажав на нее, появится список тестов. Если нажать на каждый из них, то можно увидеть отчеты и логи.
+22. После того, как JUnit подключился к ReportPortal нужно запустить приложение и запустить тесты.
+23. На странице с ReportPortal слева нажать на вкладку Launches, после чего справа появится название launches эквивалентное указанному в файле reportportal.properties
+24. Нажав на нее, появится список тестов. Если нажать на каждый из них, то можно увидеть отчеты и логи.
 
-Для запуска проекта:
+# Для запуска проекта:
 
-    Склонировать проект из репозитория командой
+1. Склонировать проект из репозитория командой
 
-git clone https://github.com/IrinaVasilenko88/Allure-ReportPortal.git
+    *git clone https://github.com/Novadiss/Auto.NinethLesson.git*
 
-    Открыть склонированный проект в Intellij IDEA
-    Открыть в терминале каталог artifacts
-    Для запуска приложения ввести команду java -jar app-card-delivery.jar
-    Запустить команду gradlew test
-    Открыть инструкцию выше и следовать шагам 19-21
+2.  Открыть склонированный проект в Intellij IDEA
+3. Открыть в терминале каталог artifacts
+4. Для запуска приложения ввести команду java -jar app-card-delivery.jar
+5. Запустить команду gradlew test
+6. Открыть инструкцию выше и следовать шагам 23-24
