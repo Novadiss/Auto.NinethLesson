@@ -188,4 +188,13 @@
 4. Для запуска приложения ввести команду java -jar app-card-delivery.jar
 5. Дважды нажать клавишу ctr
 5. Запустить команду gradle clean test
-6. Открыть инструкцию выше и следовать шагам 24-25
+6. Открыть инструкцию выше и следовать шагам 24-26
+
+Сринщоты результата:
+![изображение](https://github.com/Novadiss/Auto.NinethLesson/assets/140391002/6a1cb1ab-bb95-4542-a163-12473c94ba6d)
+![изображение](https://github.com/Novadiss/Auto.NinethLesson/assets/140391002/acb5ad02-cd33-42f5-9491-4be15133ad82)
+![изображение](https://github.com/Novadiss/Auto.NinethLesson/assets/140391002/2079b824-9698-49a7-95e6-86a4a92b1783)
+
+
+
+
